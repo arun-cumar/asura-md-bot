@@ -1,0 +1,16 @@
+{
+  "name": "asura-md-pair",
+  "version": "1.0.0",
+  "description": "Pairing site for Asura MD",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "latest",
+    "express": "latest",
+    "pino": "latest",
+    "fs-extra": "latest"
+  }
+}
