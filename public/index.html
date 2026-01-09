@@ -1,0 +1,317 @@
+<!DOCTYPE html>  
+<html lang="en">        
+<head>          
+    <title>👺Asura MD - WhatsApp Pairing Code Generator</title>          
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">          
+    <meta charset="UTF-8">  
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">          
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">        
+<style>          
+    /* Base Styles - DEEP SPACE VIOLET THEME */          
+    body {           
+        font-family: 'Poppins', sans-serif;           
+        text-align: center;           
+        padding: 20px;           
+        background: linear-gradient(135deg, #0d001e 0%, #00000a 100%);           
+        min-height: 100vh;          
+        margin: 0;          
+        display: flex;          
+        flex-direction: column;          
+        justify-content: center;          
+        align-items: center;          
+        overflow: hidden;           
+        color: #f0f0ff;           
+        perspective: 1000px; /* For 3D Tilt */          
+    }          
+        
+    /* Refined Glassmorphism Container with Tilt Potential */          
+    .container {           
+        width: 90%;          
+        max-width: 450px;           
+        margin: 0 auto;           
+        background: rgba(255, 255, 255, 0.08);           
+        backdrop-filter: blur(15px);           
+        padding: 30px;           
+        border-radius: 25px;           
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 10px rgba(153, 50, 204, 0.5);           
+        border: 1px solid rgba(255, 255, 255, 0.1);          
+        z-index: 10;           
+        transition: transform 0.5s ease-out;           
+        transform-style: preserve-3d;          
+    }          
+        
+    /* Animated Name Style (Plasma Pink Glow) */          
+    .animated-name {          
+        font-size: 2.8em; /* Adjusted for better mobile fit */          
+        font-weight: 700;           
+        color: #FF69B4;           
+        margin-bottom: 30px;          
+        animation: pulsateRose 1.8s infinite alternate;           
+        text-shadow: 0 0 25px #FF69B4, 0 0 5px #ff4500;           
+    }          
+    @keyframes pulsateRose {          
+        0% { transform: scale(1); opacity: 0.9; }          
+        100% { transform: scale(1.05); opacity: 1; }          
+    }          
+        
+    h1 { color: #fff; margin-bottom: 15px; font-size: 1.8em;}          
+    p { color: #b0c4de; font-size: 1em; }           
+              
+    input[type="number"] {           
+        width: 90%;           
+        padding: 18px;           
+        margin: 25px 0;           
+        background-color: rgba(255, 255, 255, 0.15);          
+        color: #f0f0ff;          
+        border: none;          
+        border-bottom: 3px solid #6a5acd;           
+        border-radius: 12px 12px 0 0;          
+        text-align: center;          
+        font-size: 1.3em;          
+        transition: border-bottom-color 0.3s, background-color 0.3s;          
+    }          
+    input[type="number"]:focus {          
+        outline: none;          
+        background-color: rgba(255, 255, 255, 0.2);          
+        border-bottom-color: #00BFFF;           
+    }          
+    input[type="number"]::placeholder {          
+        color: #b0c4de;          
+    }          
+              
+    /* Button Style (Glowing Blue/Purple) */          
+    button {           
+        background: linear-gradient(90deg, #6A5ACD, #00BFFF);           
+        color: white;           
+        padding: 16px 40px;           
+        border: none;           
+        border-radius: 12px;           
+        cursor: pointer;           
+        font-size: 1.3em;          
+        font-weight: 600;          
+        transition: all 0.3s ease;          
+        box-shadow: 0 0 30px rgba(0, 191, 255, 0.7);           
+    }          
+    button:hover {          
+        background: linear-gradient(90deg, #00BFFF, #6A5ACD);           
+        transform: scale(1.05);          
+        box-shadow: 0 0 40px rgba(0, 191, 255, 0.9);          
+    }          
+        
+    #result {           
+        margin-top: 30px;           
+        font-weight: 600;           
+        padding: 10px;          
+        color: #b0c4de;          
+    }          
+              
+    /* Pairing Code Display - Click to Copy */          
+    .code-display {           
+        font-size: 40px; /* Adjusted for better mobile fit */          
+        color: #FFD700;           
+        border: 4px solid #FF69B4;           
+        padding: 25px 30px;           
+        display: inline-block;           
+        margin-top: 40px;           
+        letter-spacing: 8px; /* Adjusted for better mobile fit */          
+        font-family: 'Space Mono', monospace;           
+        cursor: pointer;           
+        background-color: rgba(255, 105, 180, 0.2);           
+        border-radius: 15px;          
+        transition: background-color 0.3s, transform 0.1s, box-shadow 0.3s;          
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);           
+    }          
+    .code-display:active {          
+        transform: scale(0.95);           
+    }          
+              
+    /* Copy Feedback */          
+    #copiedFeedback {          
+        margin-top: 20px;          
+        color: #25d366;           
+        font-weight: 700;          
+        display: none;          
+        animation: fadeInOut 2s forwards;          
+    }          
+    @keyframes fadeInOut {          
+        0% { opacity: 0; }          
+        10% { opacity: 1; }          
+        90% { opacity: 1; }          
+        100% { opacity: 0; }          
+    }          
+        
+    .bottom-link {           
+        margin-top: 40px;           
+        font-size: 1em;          
+    }          
+    .bottom-link a {          
+        /* The main link styling is kept */
+        color: #00BFFF;           
+        text-decoration: none;          
+        font-weight: 600;          
+        transition: color 0.3s;
+        /* Custom styling for the WhatsApp button look */
+        padding: 10px 20px;
+        border: 2px solid #25d366; 
+        border-radius: 25px;
+        background-color: rgba(37, 211, 102, 0.1);
+        text-shadow: 0 0 5px #25d366;
+    }          
+    .bottom-link a:hover {          
+        color: #FF69B4;
+        border-color: #FF69B4;
+    }          
+        
+    /* Background Animation remains the same */          
+    #wave-animation {          
+        position: fixed;          
+        top: 0;          
+        left: 0;          
+        width: 100%;          
+        height: 100%;          
+        z-index: 1;           
+        overflow: hidden;          
+    }          
+        
+    #wave-animation::before,          
+    #wave-animation::after {          
+        content: '';          
+        position: absolute;          
+        width: 300%;          
+        height: 300%;          
+        top: -100%;          
+        left: -100%;          
+        opacity: 0.15;          
+        background: linear-gradient(to right, #FF69B4, #00BFFF);          
+        border-radius: 45% 55% 55% 45% / 45% 45% 55% 55%;          
+        animation: wave 10s ease-in-out infinite alternate;          
+    }          
+        
+    #wave-animation::after {          
+        opacity: 0.1;          
+        border-radius: 35% 65% 65% 35% / 35% 35% 65% 65%;          
+        animation: wave 15s ease-in-out infinite alternate;          
+        animation-delay: -5s;          
+    }          
+        
+    @keyframes wave {          
+        0% { transform: rotate(0deg); }          
+        100% { transform: rotate(360deg); }          
+    }          
+</style>      
+</head>          
+<body>          
+    <div id="wave-animation"></div>          
+    <div class="container" id="tilt-container">  
+        <div class="animated-name">👺Asura MD</div>        
+        <h1>🔗 WhatsApp Pairing Code</h1>          
+    
+        <p>Enter the phone number of the device you want to link (e.g., 91xxxxxxxxxx):</p>          
+          
+        <input type="number" id="phone" placeholder="Phone Number (with country code)" required>          
+          
+        <button onclick="getPairingCode()">GENERATE CODE</button>          
+          
+        <p id="result" style="color: #FF69B4;">          
+            ⚠️ The generated code must be entered on your WhatsApp within 20 seconds.          
+        </p>          
+          
+        <div id="codeDisplay" class="code-display" style="display:none;" onclick="copyCode()">CODE HERE</div>          
+        <div id="copiedFeedback" class="copied-feedback">✅ Code Copied!</div>          
+    
+        <div class="bottom-link">  
+            <a href="https://whatsapp.com/channel/0029VbB59W9GehENxhoI5l24" target="_blank" style="display: flex; align-items: center; justify-content: center;">
+                <span style="font-size: 1.5em; margin-right: 8px;">🟢</span> 
+                Join WhatsApp Channel
+            </a>
+        </div>
+        </div>        
+    <script>          
+        // --- 3D TILT EFFECT (Supports Mouse and Touch) ---          
+        const container = document.getElementById('tilt-container');          
+            
+        function handleTilt(e) {          
+            // Check if it's a touch event and get the first touch point          
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;          
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;          
+            
+            // Calculate mouse/touch position relative to the center of the viewport          
+            const xAxis = (window.innerWidth / 2 - clientX) / 25;          
+            const yAxis = (window.innerHeight / 2 - clientY) / 25;          
+                      
+            // Apply a slight rotation effect to the container          
+            container.style.transform = `rotateY(${xAxis}deg) rotateX(${-yAxis}deg)`;          
+        }          
+            
+        function resetTilt() {          
+            container.style.transform = `rotateY(0deg) rotateX(0deg)`;          
+        }          
+            
+        // Add Event Listeners for Mouse and Touch          
+        document.addEventListener('mousemove', handleTilt);          
+        document.addEventListener('touchmove', handleTilt);          
+        document.addEventListener('mouseleave', resetTilt);          
+        document.addEventListener('touchend', resetTilt);          
+            
+        // --- Code Copy Function (Tap to Copy) ---          
+        function copyCode() {          
+            const codeDisplay = document.getElementById('codeDisplay');          
+            const feedbackElement = document.getElementById('copiedFeedback');          
+            const code = codeDisplay.innerText;          
+                      
+            if (code && codeDisplay.style.display !== 'none' && code !== 'CODE HERE') {          
+                navigator.clipboard.writeText(code).then(() => {          
+                    feedbackElement.style.display = 'block';          
+                    setTimeout(() => {          
+                        feedbackElement.style.display = 'none';          
+                    }, 2000);          
+                }).catch(err => {          
+                    console.error('Copy failed:', err);          
+                    alert('Copy failed. Please select the code manually.');          
+                });          
+            }          
+        }          
+                  
+        // --- Pairing Code Generation Function ---          
+        async function getPairingCode() {          
+            const phoneInput = document.getElementById('phone');          
+            const resultElement = document.getElementById('result');          
+            const codeDisplay = document.getElementById('codeDisplay');          
+            const phoneNumber = phoneInput.value.trim();          
+            
+            document.getElementById('copiedFeedback').style.display = 'none';          
+            
+            if (!phoneNumber || phoneNumber.length < 10) {          
+                resultElement.innerHTML = "❌ Please enter a valid number (e.g., 91xxxxxxxxxx).";          
+                resultElement.style.color = '#ff4500';          
+                codeDisplay.style.display = 'none';          
+                return;          
+            }          
+            
+            resultElement.innerHTML = "⏳ Requesting code from WhatsApp...";          
+            resultElement.style.color = '#ffbf00';          
+            codeDisplay.style.display = 'none';          
+            
+            try {      
+                const response = await fetch(`/pair?number=${phoneNumber}`);      
+                const data = await response.json();      
+                  
+                if (data.code) {      
+                    resultElement.innerHTML = `🔑 Pairing Code (Tap to Copy):`;      
+                    resultElement.style.color = '#25d366';      
+                    codeDisplay.innerText = data.code;      
+                    codeDisplay.style.display = 'inline-block';      
+                } else {      
+                    resultElement.innerHTML = `❌ Failed to generate code: ${data.error || 'Try again'}`;      
+                    resultElement.style.color = '#ff4500';      
+                }      
+            } catch (error) {      
+                console.error("Fetch error:", error);      
+                resultElement.innerHTML = '⚠️ Server Error (API unreachable)';      
+                resultElement.style.color = '#ff4500';      
+            }      
+        }    
+    </script>      
+</body>          
+</html>
+
