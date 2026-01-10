@@ -10,7 +10,6 @@ import {
 import pino from 'pino';
 import fs from 'fs';
 import path from 'path';
-import axios from 'axios';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -18,86 +17,91 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 3000;
 
-// ⚠️ തിരുത്തിയത്: Raw ലിങ്ക് ഉപയോഗിക്കുക
-const GITHUB_TOKEN = "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"; 
-const REPO_BASE_URL = "https://raw.githubusercontent.com/blackmama12/AsuraMd/main/commands/";
+// സെഷൻ സൂക്ഷിക്കാൻ താൽക്കാലിക ഫോൾഡർ
+const SESSION_DIR = './temp_sessions';
+if (!fs.existsSync(SESSION_DIR)) fs.mkdirSync(SESSION_DIR);
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.send("Asura MD Pair Code Service is Running! 🚀");
 });
 
 app.get('/pair', async (req, res) => {
     let phone = req.query.number;
-    if (!phone) return res.send({ error: "Number required!" });
+    
+    if (!phone) {
+        return res.status(400).send({ error: "Phone number is required!" });
+    }
 
+    // ഫോൺ നമ്പറിൽ നിന്ന് അനാവശ്യ ചിഹ്നങ്ങൾ ഒഴിവാക്കുന്നു
     phone = phone.replace(/[^0-9]/g, '');
-    const sessionPath = path.join(__dirname, 'session', phone);
-    const { state, saveCreds } = await useMultiFileAuthState(sessionPath);
 
-    try {
-        const sock = makeWASocket({
-            auth: {
-                creds: state.creds,
-                keys: makeCacheableSignalKeyStore(state.keys, pino({ level: "silent" })),
-            },
-            printQRInTerminal: false,
-            logger: pino({ level: "silent" }),
-            // വേഗത്തിൽ കണക്ട് ആകാൻ ഉബുണ്ടു ക്രോം ഐഡന്റിറ്റി 👇
-            browser: Browsers.ubuntu("Chrome") 
-        });
+    // ഓരോ റിക്വസ്റ്റിനും പ്രത്യേകം ഫോൾഡർ (Conflict ഒഴിവാക്കാൻ)
+    const sessionId = `${phone}_${Date.now()}`;
+    const specificSession = path.join(SESSION_DIR, sessionId);
+    
+    const { state, saveCreds } = await useMultiFileAuthState(specificSession);
 
-        sock.ev.on('creds.update', saveCreds);
+    const sock = makeWASocket({
+        auth: {
+            creds: state.creds,
+            keys: makeCacheableSignalKeyStore(state.keys, pino({ level: "fatal" })),
+        },
+        printQRInTerminal: false,
+        logger: pino({ level: "fatal" }),
+        // ബ്രൗസർ ഐഡന്റിറ്റി മാറ്റുന്നത് കണക്ഷൻ എളുപ്പമാക്കും
+        browser: ["Ubuntu", "Chrome", "20.0.04"],
+        connectTimeoutMs: 60000,
+        keepAliveIntervalMs: 10000
+    });
 
-        if (!sock.authState.creds.registered) {
-            await delay(1500); // ഡിലേ കുറച്ചു
-            const code = await sock.requestPairingCode(phone);
-            if (!res.headersSent) res.send({ code: code });
+    // പെയറിംഗ് കോഡ് റിക്വസ്റ്റ് ചെയ്യാനുള്ള ലോജിക്
+    if (!sock.authState.creds.registered) {
+        setTimeout(async () => {
+            try {
+                const code = await sock.requestPairingCode(phone);
+                if (!res.headersSent) {
+                    res.send({ code: code });
+                }
+            } catch (err) {
+                console.error("Pairing Error:", err);
+                if (!res.headersSent) res.status(500).send({ error: "Service Busy. Try Again." });
+            }
+        }, 3000); // 3 സെക്കൻഡ് വെയിറ്റ് ചെയ്യുന്നു
+    }
+
+    sock.ev.on('creds.update', saveCreds);
+
+    sock.ev.on('connection.update', async (update) => {
+        const { connection, lastDisconnect } = update;
+
+        if (connection === 'open') {
+            console.log(`✅ Success: ${phone} Connected`);
+            
+            // ലിങ്ക് ആയിക്കഴിഞ്ഞാൽ വാട്സാപ്പിലേക്ക് ഒരു കൺഫർമേഷൻ അയക്കുന്നു
+            await delay(5000);
+            await sock.sendMessage(sock.user.id, { text: "Asura MD Pair Code Successful! ✅" });
+            
+            // സെഷൻ ഫയലുകൾ ക്ലീൻ ചെയ്യുന്നു (Memory മാനേജ്‌മെന്റ്)
+            await delay(2000);
+            await sock.logout();
+            
+            if (fs.existsSync(specificSession)) {
+                fs.rmSync(specificSession, { recursive: true, force: true });
+            }
         }
 
-        // 🚀 കമാൻഡ് ഹാൻഡ്‌ലർ
-        sock.ev.on('messages.upsert', async (m) => {
-            const msg = m.messages[0];
-            if (!msg.message || msg.key.fromMe) return;
-
-            const text = msg.message.conversation || msg.message.extendedTextMessage?.text || "";
-            if (!text.startsWith('.')) return;
-
-            const args = text.trim().split(/ +/).slice(1);
-            const command = text.split(" ")[0].slice(1).toLowerCase();
-
-            try {
-                const response = await axios.get(`${REPO_BASE_URL}${command}.js`, {
-                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
-                });
-
-                let rawCode = response.data;
-                const cleanCode = rawCode.replace(/export default/, "const handler =").concat("\nreturn handler;");
-                const commandRoutine = new Function('fs', 'axios', 'path', cleanCode)(fs, axios, path);
-                
-                await commandRoutine(sock, msg, args);
-
-            } catch (err) {
-                console.log(`Command Error [${command}]:`, err.message);
-            }
-        });
-
-        sock.ev.on('connection.update', async (update) => {
-            const { connection, lastDisconnect } = update;
-            if (connection === 'open') {
-                console.log(`✅ ${phone} Connected!`);
-                await sock.sendMessage(sock.user.id, { text: "*👺 Asura MD Cloud Active!*" });
-            }
-            if (connection === 'close') {
-                const reason = lastDisconnect?.error?.output?.statusCode;
-                if (reason === DisconnectReason.loggedOut) {
-                    fs.rmSync(sessionPath, { recursive: true, force: true });
+        if (connection === 'close') {
+            const reason = lastDisconnect?.error?.output?.statusCode;
+            if (reason !== DisconnectReason.loggedOut) {
+                // കണക്ഷൻ എറർ വന്നാൽ സെഷൻ ക്ലീൻ ചെയ്യുക
+                if (fs.existsSync(specificSession)) {
+                    fs.rmSync(specificSession, { recursive: true, force: true });
                 }
             }
-        });
-
-    } catch (err) {
-        if (!res.headersSent) res.status(500).send({ error: "Server Busy" });
-    }
+        }
+    });
 });
 
-app.listen(port, () => console.log(`Asura MD Cloud running on ${port}`));
+app.listen(port, () => {
+    console.log(`Server started on port ${port}`);
+});
