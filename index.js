@@ -4,7 +4,8 @@ import {
     useMultiFileAuthState, 
     delay, 
     makeCacheableSignalKeyStore,
-    DisconnectReason 
+    DisconnectReason,
+    Browsers
 } from '@whiskeysockets/baileys';
 import pino from 'pino';
 import fs from 'fs';
@@ -30,6 +31,9 @@ app.get('/pair', async (req, res) => {
     const sessionId = `asura_${Math.random().toString(36).substring(7)}`;
     const sessionPath = path.join('./sessions', sessionId);
     
+    // സെഷൻ ഫോൾഡർ ഉണ്ടാക്കുന്നു
+    if (!fs.existsSync('./sessions')) fs.mkdirSync('./sessions');
+
     const { state, saveCreds } = await useMultiFileAuthState(sessionPath);
 
     const sock = makeWASocket({
@@ -39,26 +43,24 @@ app.get('/pair', async (req, res) => {
         },
         printQRInTerminal: false,
         logger: pino({ level: "fatal" }),
-        browser: ["Chrome (Linux)", "", ""],
-        // കണക്ഷൻ വേഗത്തിലാക്കാൻ താഴെ പറയുന്നവ ചേർക്കുന്നു
-        connectTimeoutMs: 60000, 
-        defaultQueryTimeoutMs: 0,
-        keepAliveIntervalMs: 10000
+        // ബ്രൗസർ ഡീറ്റെയിൽസ് മാറ്റുന്നത് കണക്ഷൻ എളുപ്പമാക്കും
+        browser: Browsers.ubuntu("Chrome")
     });
 
-    // പ്രധാന മാറ്റം: ഉടനെ തന്നെ പെയറിംഗ് കോഡ് ചോദിക്കുന്നു
-    if (!sock.authState.creds.registered) {
+    // പെയറിംഗ് കോഡ് എടുക്കുന്ന ഭാഗം
+    setTimeout(async () => {
         try {
-            await delay(1500); // വളരെ കുറഞ്ഞ സമയം മാത്രം വെയിറ്റ് ചെയ്യുന്നു
-            const code = await sock.requestPairingCode(num);
-            if (!res.headersSent) {
-                return res.send({ code: code });
+            if (!sock.authState.creds.registered) {
+                const code = await sock.requestPairingCode(num);
+                if (!res.headersSent) {
+                    res.send({ code: code });
+                }
             }
         } catch (err) {
-            console.log("Error requesting code:", err);
-            if (!res.headersSent) return res.status(500).json({ error: "Try again" });
+            console.log("Error in requestPairingCode:", err);
+            if (!res.headersSent) res.status(500).json({ error: "Service Busy" });
         }
-    }
+    }, 3000); // 3 സെക്കൻഡ് ഡിലേ നൽകുന്നു
 
     sock.ev.on('creds.update', saveCreds);
 
@@ -66,26 +68,36 @@ app.get('/pair', async (req, res) => {
         const { connection, lastDisconnect } = update;
         
         if (connection === 'open') {
-            console.log("Connected!");
-            // സെഷൻ ഐഡി ജനറേറ്റ് ചെയ്ത് അയക്കുന്ന ഭാഗം
-            const credsData = fs.readFileSync(path.join(sessionPath, 'creds.json'));
-            const base64Session = Buffer.from(credsData).toString('base64');
-            const sessionID = `Asura-MD~${base64Session}`;
+            console.log("✅ Connection Successful!");
+            await delay(5000);
 
-            await sock.sendMessage(sock.user.id, { text: `*CONNECTED SUCCESSFULLY!* \n\n*Session ID:* \n${sessionID}` });
+            // creds.json റീഡ് ചെയ്യുന്നു
+            const credsFile = path.join(sessionPath, 'creds.json');
+            if (fs.existsSync(credsFile)) {
+                const credsData = fs.readFileSync(credsFile);
+                const base64Session = Buffer.from(credsData).toString('base64');
+                const sessionID = `Asura-MD~${base64Session}`;
+
+                // യൂസർക്ക് സെഷൻ ഐഡി അയക്കുന്നു
+                await sock.sendMessage(sock.user.id, { 
+                    text: `*ASURA-MD CONNECTED SUCCESSFULLY!* ✅\n\n*Session ID:* \n\`${sessionID}\`\n\n> Don't share this ID with anyone!` 
+                });
+            }
             
-            await delay(3000);
-            sock.end();
+            await delay(2000);
+            // സെഷൻ ക്ലീൻ അപ്പ്
             fs.rmSync(sessionPath, { recursive: true, force: true });
+            // sock.logout() ഒഴിവാക്കി sock.end() ഉപയോഗിക്കുക, എങ്കിൽ മാത്രമേ വാട്സാപ്പിൽ കണക്ഷൻ നിലനിൽക്കൂ
+            sock.end();
         }
 
         if (connection === 'close') {
             const reason = lastDisconnect?.error?.output?.statusCode;
-            if (reason === DisconnectReason.loggedOut) {
-                fs.rmSync(sessionPath, { recursive: true, force: true });
+            if (reason !== DisconnectReason.loggedOut) {
+                // കണക്ഷൻ എറർ വന്നാൽ ഇവിടെ ഹാൻഡിൽ ചെയ്യാം
             }
         }
     });
 });
 
-app.listen(port, () => console.log(`Server on ${port}`));
+app.listen(port, () => console.log(`Server started on port ${port}`));
