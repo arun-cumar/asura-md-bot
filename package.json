@@ -1,7 +1,7 @@
 {
-  "name": "asura-md-pair",
-  "version": "1.0.0",
-  "description": "Pairing site for Asura MD",
+  "name": "asura-md",
+  "version": "1.2.0",
+  "description": "A Simple Whatsapp Bot by Arun Cumar",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -9,8 +9,20 @@
   },
   "dependencies": {
     "@whiskeysockets/baileys": "latest",
-    "express": "latest",
+    "@adiwajshing/keyed-db": "latest",
     "pino": "latest",
-    "fs-extra": "latest"
+    "yt-search": "latest",
+    "axios": "latest",
+    "fs-extra": "latest",
+    "express": "latest",
+    "fluent-ffmpeg": "latest",
+    "ffmpeg-static": "latest", 
+    "jimp": "latest",
+    "node-fetch": "latest",
+    "g-i-s": "latest",
+    "@distube/ytdl-core": "latest",   
+    "wa-sticker-formatter": "latest",
+    "qrcode-terminal": "latest",
+    "express": "latest"
   }
 }
