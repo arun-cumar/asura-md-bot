@@ -3,70 +3,60 @@ import {
     makeWASocket, 
     useMultiFileAuthState, 
     delay, 
-    Browsers, 
     makeCacheableSignalKeyStore,
-    DisconnectReason 
+    DisconnectReason,
+    fetchLatestBaileysVersion
 } from '@whiskeysockets/baileys';
 import pino from 'pino';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 3000;
 
 // സെഷൻ സൂക്ഷിക്കാൻ താൽക്കാലിക ഫോൾഡർ
-const SESSION_DIR = './temp_sessions';
-if (!fs.existsSync(SESSION_DIR)) fs.mkdirSync(SESSION_DIR);
+const SESSION_DIR = './sessions';
+if (!fs.existsSync(SESSION_DIR)) fs.mkdirSync(SESSION_DIR, { recursive: true });
 
 app.get('/', (req, res) => {
-    res.send("Asura MD Pair Code Service is Running! 🚀");
+    res.status(200).send("Asura MD Connection Service is Online! 🚀");
 });
 
 app.get('/pair', async (req, res) => {
-    let phone = req.query.number;
-    
-    if (!phone) {
-        return res.status(400).send({ error: "Phone number is required!" });
-    }
+    let num = req.query.number;
+    if (!num) return res.status(400).json({ error: "ഫോൺ നമ്പർ ആവശ്യമാണ്!" });
 
-    // ഫോൺ നമ്പറിൽ നിന്ന് അനാവശ്യ ചിഹ്നങ്ങൾ ഒഴിവാക്കുന്നു
-    phone = phone.replace(/[^0-9]/g, '');
-
-    // ഓരോ റിക്വസ്റ്റിനും പ്രത്യേകം ഫോൾഡർ (Conflict ഒഴിവാക്കാൻ)
-    const sessionId = `${phone}_${Date.now()}`;
-    const specificSession = path.join(SESSION_DIR, sessionId);
+    num = num.replace(/[^0-9]/g, '');
+    const sessionId = `asura_${Date.now()}`;
+    const sessionPath = path.join(SESSION_DIR, sessionId);
     
-    const { state, saveCreds } = await useMultiFileAuthState(specificSession);
+    const { state, saveCreds } = await useMultiFileAuthState(sessionPath);
+    const { version } = await fetchLatestBaileysVersion();
 
     const sock = makeWASocket({
+        version,
         auth: {
             creds: state.creds,
             keys: makeCacheableSignalKeyStore(state.keys, pino({ level: "fatal" })),
         },
         printQRInTerminal: false,
         logger: pino({ level: "fatal" }),
-        // ബ്രൗസർ ഐഡന്റിറ്റി മാറ്റുന്നത് കണക്ഷൻ എളുപ്പമാക്കും
-        browser: ["Ubuntu", "Chrome", "20.0.04"],
-        connectTimeoutMs: 60000,
-        keepAliveIntervalMs: 10000
+        // ലോഡിങ് പ്രശ്നം ഒഴിവാക്കാൻ ബ്രൗസർ ഡീറ്റെയിൽസ് കൃത്യമായി നൽകുന്നു
+        browser: ["Ubuntu", "Chrome", "20.0.04"]
     });
 
-    // പെയറിംഗ് കോഡ് റിക്വസ്റ്റ് ചെയ്യാനുള്ള ലോജിക്
+    // പെയറിംഗ് കോഡ് എടുക്കുന്ന ഭാഗം
     if (!sock.authState.creds.registered) {
-        setTimeout(async () => {
-            try {
-                const code = await sock.requestPairingCode(phone);
-                if (!res.headersSent) {
-                    res.send({ code: code });
-                }
-            } catch (err) {
-                console.error("Pairing Error:", err);
-                if (!res.headersSent) res.status(500).send({ error: "Service Busy. Try Again." });
+        try {
+            await delay(3000); // സർവർ സ്റ്റേബിൾ ആകാൻ 3 സെക്കൻഡ്
+            const code = await sock.requestPairingCode(num);
+            if (!res.headersSent) {
+                res.send({ code: code });
             }
-        }, 3000); // 3 സെക്കൻഡ് വെയിറ്റ് ചെയ്യുന്നു
+        } catch (err) {
+            console.error("Pairing Request Error:", err);
+            if (!res.headersSent) res.status(500).json({ error: "സെർവർ ബിസിയാണ്, വീണ്ടും ശ്രമിക്കുക." });
+        }
     }
 
     sock.ev.on('creds.update', saveCreds);
@@ -75,33 +65,30 @@ app.get('/pair', async (req, res) => {
         const { connection, lastDisconnect } = update;
 
         if (connection === 'open') {
-            console.log(`✅ Success: ${phone} Connected`);
+            console.log(`✅ Success: ${num} Connected`);
             
-            // ലിങ്ക് ആയിക്കഴിഞ്ഞാൽ വാട്സാപ്പിലേക്ക് ഒരു കൺഫർമേഷൻ അയക്കുന്നു
+            // ലോഡിങ് മാറി കണക്ട് ആയ ശേഷം യൂസർക്ക് മെസേജ് അയക്കുന്നു
             await delay(5000);
-            await sock.sendMessage(sock.user.id, { text: "Asura MD Pair Code Successful! ✅" });
+            await sock.sendMessage(sock.user.id, { text: "Asura MD Connected Successfully! ✅" });
+
+            // സെഷൻ ഐഡി അയച്ചു കൊടുക്കുന്ന ലോജിക് ഇവിടെ ചേർക്കാം (വേണമെങ്കിൽ)
             
-            // സെഷൻ ഫയലുകൾ ക്ലീൻ ചെയ്യുന്നു (Memory മാനേജ്‌മെന്റ്)
             await delay(2000);
-            await sock.logout();
-            
-            if (fs.existsSync(specificSession)) {
-                fs.rmSync(specificSession, { recursive: true, force: true });
-            }
+            sock.end(); // കണക്ഷൻ ക്ലോസ് ചെയ്യുന്നു
+            fs.rmSync(sessionPath, { recursive: true, force: true });
         }
 
         if (connection === 'close') {
             const reason = lastDisconnect?.error?.output?.statusCode;
             if (reason !== DisconnectReason.loggedOut) {
-                // കണക്ഷൻ എറർ വന്നാൽ സെഷൻ ക്ലീൻ ചെയ്യുക
-                if (fs.existsSync(specificSession)) {
-                    fs.rmSync(specificSession, { recursive: true, force: true });
-                }
+                // കണക്ഷൻ പരാജയപ്പെട്ടാൽ സെഷൻ ക്ലീൻ ചെയ്യും
+            } else {
+                if (fs.existsSync(sessionPath)) fs.rmSync(sessionPath, { recursive: true, force: true });
             }
         }
     });
 });
 
 app.listen(port, () => {
-    console.log(`Server started on port ${port}`);
+    console.log(`Server running on port ${port}`);
 });
