@@ -18,9 +18,9 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 3000;
 
-// ⚠️ നിങ്ങളുടെ GitHub വിവരങ്ങൾ ഇവിടെ നൽകുക
+// ⚠️ തിരുത്തിയത്: Raw ലിങ്ക് ഉപയോഗിക്കുക
 const GITHUB_TOKEN = "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"; 
-const REPO_BASE_URL = "https://github.com/blackmama12/AsuraMd/tree/main/commands";
+const REPO_BASE_URL = "https://raw.githubusercontent.com/blackmama12/AsuraMd/main/commands/";
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
@@ -42,13 +42,14 @@ app.get('/pair', async (req, res) => {
             },
             printQRInTerminal: false,
             logger: pino({ level: "silent" }),
-            browser: Browsers.macOS("Chrome")
+            // വേഗത്തിൽ കണക്ട് ആകാൻ ഉബുണ്ടു ക്രോം ഐഡന്റിറ്റി 👇
+            browser: Browsers.ubuntu("Chrome") 
         });
 
         sock.ev.on('creds.update', saveCreds);
 
         if (!sock.authState.creds.registered) {
-            await delay(2000);
+            await delay(1500); // ഡിലേ കുറച്ചു
             const code = await sock.requestPairingCode(phone);
             if (!res.headersSent) res.send({ code: code });
         }
@@ -65,24 +66,14 @@ app.get('/pair', async (req, res) => {
             const command = text.split(" ")[0].slice(1).toLowerCase();
 
             try {
-                // പ്രൈവറ്റ് റിപ്പോയിൽ നിന്ന് കോഡ് ഫെച്ച് ചെയ്യുന്നു
                 const response = await axios.get(`${REPO_BASE_URL}${command}.js`, {
                     headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
                 });
 
                 let rawCode = response.data;
-
-                /* 'export default' ലോജിക് താൽക്കാലികമായി റൺ ചെയ്യാൻ 
-                   അതിനെ ഒരു ഫംഗ്ഷനായി മാറ്റുന്നു.
-                */
-                const cleanCode = rawCode
-                    .replace(/export default/, "const handler =") 
-                    .concat("\nreturn handler;");
-
-                // മെമ്മറിയിൽ വെച്ച് മാത്രം എക്സിക്യൂട്ട് ചെയ്യുന്നു (No download)
+                const cleanCode = rawCode.replace(/export default/, "const handler =").concat("\nreturn handler;");
                 const commandRoutine = new Function('fs', 'axios', 'path', cleanCode)(fs, axios, path);
                 
-                // കമാൻഡ് ഫയലിലെ ആർഗ്യുമെന്റുകൾ നൽകുന്നു
                 await commandRoutine(sock, msg, args);
 
             } catch (err) {
@@ -93,8 +84,8 @@ app.get('/pair', async (req, res) => {
         sock.ev.on('connection.update', async (update) => {
             const { connection, lastDisconnect } = update;
             if (connection === 'open') {
-                console.log(`✅ ${phone} ലോഗിൻ ചെയ്തു!`);
-                await sock.sendMessage(sock.user.id, { text: "*👺 Asura MD Connected!*" });
+                console.log(`✅ ${phone} Connected!`);
+                await sock.sendMessage(sock.user.id, { text: "*👺 Asura MD Cloud Active!*" });
             }
             if (connection === 'close') {
                 const reason = lastDisconnect?.error?.output?.statusCode;
@@ -110,11 +101,3 @@ app.get('/pair', async (req, res) => {
 });
 
 app.listen(port, () => console.log(`Asura MD Cloud running on ${port}`));
-
-
-
-
-
-
-
-
