@@ -18,6 +18,13 @@ const port = process.env.PORT || 3000;
 const SESSION_DIR = './sessions';
 if (!fs.existsSync(SESSION_DIR)) fs.mkdirSync(SESSION_DIR, { recursive: true });
 
+// Express-ന് നിങ്ങളുടെ HTML ഫയൽ എവിടെയാണെന്ന് പറഞ്ഞു കൊടുക്കുന്നു
+app.use(express.static('./')); 
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 app.get('/', (req, res) => {
     res.status(200).send("Asura MD Connection Service is Online! 🚀");
 });
