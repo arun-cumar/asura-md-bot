@@ -11,6 +11,7 @@ import axios from 'axios';
 import express from 'express';
 
 const app = express();
+app.use(express.static('public'));
 const PORT = process.env.PORT || 10000;
 
 // Render അല്ലെങ്കിൽ VPS-ലെ Environment Variables-ൽ ഇവ സെറ്റ് ചെയ്യുക
