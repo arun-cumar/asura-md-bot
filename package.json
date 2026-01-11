@@ -2,10 +2,10 @@
   "name": "Asura-Md",
   "version": "2.0",
   "description": "A Simple Whatsapp Bot by Arun Cumar",
-  "main": "start.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "npm start"
+    "start": "node index.js"
   },
   "dependencies": {
     "@whiskeysockets/baileys": "latest",
