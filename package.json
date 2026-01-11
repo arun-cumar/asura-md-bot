@@ -5,7 +5,7 @@
   "main": "start.js",
   "type": "module",
   "scripts": {
-    "start": "node start.js"
+    "start": "npm start"
   },
   "dependencies": {
     "@whiskeysockets/baileys": "latest",
