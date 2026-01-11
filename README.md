@@ -4,17 +4,7 @@
   
 
 
----
 
-### 🚀 How to Deploy
-
-#### 1️⃣ Render / Heroku Deployment
- **Environment Variable**:
-SESSION_ID=
-
-
-#### 2️⃣ Terminal / Termux Installation
-Past your terminal 
 
 ```bash
 
