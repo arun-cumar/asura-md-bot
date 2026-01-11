@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASURA MD - Pairing Service</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background: #0f172a; color: white; font-family: 'Inter', sans-serif; }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .code-box {
+            letter-spacing: 5px;
+            background: #1e293b;
+            border: 2px dashed #38bdf8;
+        }
+        .shimmer {
+            background: linear-gradient(90deg, #38bdf8, #818cf8, #38bdf8);
+            background-size: 200% auto;
+            animation: shine 3s linear infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        @keyframes shine { to { background-position: 200% center; } }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="glass-card max-w-md w-full p-8 rounded-3xl shadow-2xl text-center">
+        <h1 class="text-4xl font-black shimmer mb-2">ASURA MD</h1>
+        <p class="text-gray-400 text-sm mb-8">Enter your number to get pairing code</p>
+
+        <div class="space-y-6">
+            <div class="relative text-left">
+                <label class="text-xs font-bold text-sky-400 uppercase ml-2">Phone Number</label>
+                <input type="number" id="phoneNumber" placeholder="91XXXXXXXXXX" 
+                    class="w-full bg-slate-900 border border-slate-700 p-4 rounded-xl focus:outline-none focus:border-sky-500 transition-all text-white mt-1">
+            </div>
+
+            <button onclick="getPairingCode()" id="submitBtn"
+                class="w-full bg-sky-600 hover:bg-sky-500 font-bold py-4 rounded-xl shadow-lg transform active:scale-95 transition-all">
+                GET CODE <i class="fa-solid fa-bolt ml-2"></i>
+            </button>
+
+            <div id="loading" class="hidden">
+                <div class="animate-spin inline-block w-8 h-8 border-4 border-sky-500 border-t-transparent rounded-full mb-2"></div>
+                <p class="text-xs text-gray-400">Requesting code from server...</p>
+            </div>
+
+            <div id="resultArea" class="hidden space-y-4 animate-bounce mt-4">
+                <p class="text-sm text-green-400 font-bold uppercase">Your Pairing Code:</p>
+                <div id="pairCode" class="code-box text-3xl font-black py-4 px-2 rounded-2xl text-sky-400">
+                    --------
+                </div>
+                <button onclick="copyCode()" class="text-xs text-slate-400 hover:text-white underline">
+                    <i class="fa-regular fa-copy mr-1"></i> Copy Code
+                </button>
+            </div>
+        </div>
+
+        <p class="mt-8 text-[10px] text-slate-500 uppercase tracking-widest">Powered by Asura Community</p>
+    </div>
+
+    <script>
+        async function getPairingCode() {
+            const number = document.getElementById('phoneNumber').value;
+            const btn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loading');
+            const resultArea = document.getElementById('resultArea');
+            const pairCodeDisplay = document.getElementById('pairCode');
+
+            if (!number || number.length < 10) {
+                alert("ദയവായി ശരിയായ നമ്പർ നൽകുക!");
+                return;
+            }
+
+            // UI Changes
+            btn.classList.add('hidden');
+            loading.classList.remove('hidden');
+            resultArea.classList.add('hidden');
+
+            try {
+                // ഇവിടെ നിങ്ങളുടെ Render App URL നൽകുക
+                const response = await fetch(`/get-pair?number=${number}`);
+                const data = await response.json();
+
+                if (data.code) {
+                    pairCodeDisplay.innerText = data.code;
+                    resultArea.classList.remove('hidden');
+                } else {
+                    alert("Error: " + (data.error || "Failed to fetch code"));
+                    btn.classList.remove('hidden');
+                }
+            } catch (err) {
+                alert("Server Connection Failed!");
+                btn.classList.remove('hidden');
+            } finally {
+                loading.classList.add('hidden');
+            }
+        }
+
+        function copyCode() {
+            const code = document.getElementById('pairCode').innerText;
+            navigator.clipboard.writeText(code);
+            alert("കോഡ് കോപ്പി ചെയ്തു!");
+        }
+    </script>
+</body>
+</html>
