@@ -1,27 +1,15 @@
 {
-  "name": "Asura-Md",
-  "version": "2.0",
-  "description": "A Simple Whatsapp Bot by Arun Cumar",
+  "name": "pro-guard-bot",
+  "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "start": "node index.js"
-  },
   "dependencies": {
     "@whiskeysockets/baileys": "latest",
-    "@adiwajshing/keyed-db": "latest",
+    "@tensorflow/tfjs-node": "latest",
+    "nsfwjs": "latest",
     "pino": "latest",
-    "yt-search": "latest",
-    "axios": "latest",
-    "fs-extra": "latest",
-    "express": "latest",
-    "fluent-ffmpeg": "latest",
-    "ffmpeg-static": "latest", 
-    "jimp": "latest",
-    "node-fetch": "latest",
-    "g-i-s": "latest",
-    "@distube/ytdl-core": "latest",   
-    "wa-sticker-formatter": "latest",
     "qrcode-terminal": "latest"
+  },
+  "scripts": {
+    "start": "node index.js"
   }
 }
