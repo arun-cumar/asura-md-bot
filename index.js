@@ -1,150 +1,112 @@
-import { 
-    makeWASocket, 
+const { 
+    default: makeWASocket, 
     useMultiFileAuthState, 
     DisconnectReason, 
-    Browsers, 
-    makeCacheableSignalKeyStore 
-} from '@whiskeysockets/baileys';
-import pino from 'pino';
-import fs from 'fs';
-import axios from 'axios';
-import express from 'express';
+    getContentType,
+    downloadContentFromMessage 
+} = require('@whiskeysockets/baileys');
+const nsfw = require('nsfwjs');
+const tf = require('@tensorflow/tfjs-node');
+const pino = require('pino');
+const { Boom } = require('@hapi/boom');
 
-const app = express();
-const PORT = process.env.PORT || 10000;
+let model;
 
-// Env Variables
-const SESSION_ID = process.env.SESSION_ID; // ASURA_MD_...
-const GH_KEY = process.env.GH_KEY; 
-const REPO_URL = process.env.REPO_URL; // Example: "username/privaterepo/commands"
-
-const commands = new Map();
-
-// 1. Session Decoder (ID-യെ ഫയൽ ആക്കി മാറ്റുന്നു)
-if (SESSION_ID && !fs.existsSync('./session/creds.json')) {
-    if (!fs.existsSync('./session')) fs.mkdirSync('./session');
-    try {
-        const base64Data = SESSION_ID.replace('ASURA_MD_', '');
-        const jsonCreds = Buffer.from(base64Data, 'base64').toString('utf-8');
-        fs.writeFileSync('./session/creds.json', jsonCreds);
-        console.log("✅ Session Loaded from Environment Variable");
-    } catch (e) {
-        console.error("❌ Invalid Session ID");
-    }
+// AI മോഡൽ മെമ്മറിയിലേക്ക് ലോഡ് ചെയ്യുന്നു
+async function loadAI() {
+    console.log("✨ AI നിരീക്ഷണ സംവിധാനം തയ്യാറെടുക്കുന്നു...");
+    model = await nsfw.load();
+    console.log("✅ AI സിസ്റ്റം ഓൺലൈൻ ആയി!");
 }
 
-// 2. RAM Loader (No Download to Disk)
-async function loadCommandsToRAM() {
-    if (!GH_KEY || !REPO_URL) return console.log("⚠️ Missing GH_KEY or REPO_URL");
-    try {
-        const [owner, repo, folder] = REPO_URL.split('/');
-        const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${folder}`;
-        
-        const { data } = await axios.get(apiUrl, {
-            headers: { 'Authorization': `token ${GH_KEY}` }
-        });
-
-        for (const file of data) {
-            if (file.name.endsWith('.js')) {
-                const { data: code } = await axios.get(file.download_url, {
-                    headers: { 'Authorization': `token ${GH_KEY}` }
-                });
-                const cleanCode = code.replace(/export default/, "const handler =").concat("\nreturn handler;");
-                const handler = new Function('fs', 'axios', 'path', cleanCode)(fs, axios, {});
-                commands.set(file.name.replace('.js', '').toLowerCase(), handler);
-            }
-        }
-        console.log(`✅ Loaded ${commands.size} commands directly to RAM.`);
-    } catch (e) {
-        console.error("❌ Repo Loading Failed");
-    }
-}
-
-// 3. Main Bot Startup
-async function startAsura() {
-    const { state, saveCreds } = await useMultiFileAuthState('./session');
+async function startBot() {
+    await loadAI();
+    
+    // സെഷൻ സേവ് ചെയ്യാൻ 'auth_info' എന്ന ഫോൾഡർ ഉപയോഗിക്കും
+    const { state, saveCreds } = await useMultiFileAuthState('auth_info');
 
     const sock = makeWASocket({
-        auth: {
-            creds: state.creds,
-            keys: makeCacheableSignalKeyStore(state.keys, pino({ level: "silent" })),
-        },
-        logger: pino({ level: "silent" }),
-        browser: Browsers.ubuntu("Chrome")
+        auth: state,
+        printQRInTerminal: true,
+        logger: pino({ level: 'silent' }),
+        browser: ['🛡️ AI Guard', 'MacOS', '1.0.0']
     });
 
     sock.ev.on('creds.update', saveCreds);
 
-    sock.ev.on('connection.update', async (update) => {
-        const { connection, lastDisconnect } = update;
-
-        if (connection === 'open') {
-            console.log("✅ Connection Successful!");
-            await loadCommandsToRAM();
-
-            // Session ID DM അയക്കുന്നു
-            const creds = fs.readFileSync('./session/creds.json', 'utf-8');
-            const sessionID = `ASURA_MD_${Buffer.from(creds).toString('base64')}`;
-            
-            await sock.sendMessage(sock.user.id, { 
-                text: `*👺 ASURA MD CONNECTED*\n\nYour Session ID:\n\n\`\`\`${sessionID}\`\`\`` 
-            });
-        }
-
-        if (connection === 'close') {
-            const shouldReconnect = lastDisconnect.error?.output?.statusCode !== DisconnectReason.loggedOut;
-            if (shouldReconnect) startAsura();
-            else {
-                console.log("Logged out. Deleting session...");
-                fs.rmSync('./session', { recursive: true, force: true });
+    // --- 1. മോഡേൺ വെൽക്കം & വാർണിംഗ് സിസ്റ്റം ---
+    sock.ev.on('group-participants.update', async (anu) => {
+        if (anu.action === 'add') {
+            for (let user of anu.participants) {
+                const welcomeMsg = `╭━━━ ✨ *WELCOME* ✨ ━━━╮\n┃\n┃ 👋 ഹലോ @${user.split("@")[0]}!\n┃ ഗ്രൂപ്പിലേക്ക് സ്വാഗതം.\n┃\n┃ ⚠️ *ശ്രദ്ധിക്കുക:* \n┃ 🔞 18+ ഉള്ളടക്കങ്ങൾ പാടില്ല.\n┃ 🔗 ലിങ്കുകൾ അനുവദനീയമല്ല.\n┃\n┃ _ഈ ഗ്രൂപ്പ് AI സംരക്ഷണത്തിലാണ്!_\n╰━━━━━━━━━━━━━━━━╯`;
+                await sock.sendMessage(anu.id, { text: welcomeMsg, mentions: [user] });
             }
         }
     });
 
-    sock.ev.on('messages.upsert', async (m) => {
-        const msg = m.messages[0];
-        if (!msg.message || msg.key.fromMe) return;
-        const text = msg.message.conversation || msg.message.extendedTextMessage?.text || "";
-        if (!text.startsWith('.')) return;
+    // --- 2. ആന്റി-ലിങ്ക് & അഡൽറ്റ് ഫിൽട്ടർ ലോജിക് ---
+    sock.ev.on('messages.upsert', async (chatUpdate) => {
+        try {
+            const msg = chatUpdate.messages[0];
+            if (!msg.message || msg.key.fromMe) return;
 
-        const cmd = text.split(" ")[0].slice(1).toLowerCase();
-        if (commands.has(cmd)) {
-            try {
-                await commands.get(cmd)(sock, msg, text.split(" ").slice(1));
-            } catch (err) { console.error(err); }
+            const from = msg.key.remoteJid;
+            const isGroup = from.endsWith('@g.us');
+            if (!isGroup) return;
+
+            const type = getContentType(msg.message);
+            const body = (type === 'conversation') ? msg.message.conversation : 
+                         (type === 'extendedTextMessage') ? msg.message.extendedTextMessage.text : 
+                         (type === 'imageMessage' || type === 'videoMessage') ? msg.message[type].caption : '';
+
+            // --- A. എല്ലാ ലിങ്കുകളും തടയുന്നു ---
+            const linkRegex = /https?:\/\/\S+/gi;
+            if (linkRegex.test(body)) {
+                console.log("🚫 ലിങ്ക് കണ്ടെത്തി! നീക്കം ചെയ്യുന്നു...");
+                return await sock.sendMessage(from, { delete: msg.key });
+            }
+
+            // --- B. AI അഡൽറ്റ് മീഡിയ സ്കാനിംഗ് ---
+            if (type === 'imageMessage' || type === 'stickerMessage' || type === 'videoMessage') {
+                const isVideo = type === 'videoMessage';
+                // വീഡിയോ ആണെങ്കിൽ അതിന്റെ തംബ്നൈൽ സ്കാൻ ചെയ്യും
+                const stream = await downloadContentFromMessage(msg.message[type], isVideo ? 'video' : (type === 'imageMessage' ? 'image' : 'sticker'));
+                
+                let buffer = Buffer.from([]);
+                for await (const chunk of stream) { buffer = Buffer.concat([buffer, chunk]); }
+
+                // AI ഇമേജ് പ്രോസസ്സിംഗ്
+                const image = tf.node.decodeImage(buffer, 3);
+                const predictions = await model.classify(image);
+                image.dispose(); // മെമ്മറി ക്ലിയർ ചെയ്യുന്നു
+
+                // Porn, Hentai, Sexy കാറ്റഗറികൾ പരിശോധിക്കുന്നു
+                const isNsfw = predictions.some(p => 
+                    (p.className === 'Porn' || p.className === 'Hentai' || p.className === 'Sexy') && p.probability > 0.65
+                );
+
+                if (isNsfw) {
+                    console.log("🔞 അഡൽറ്റ് കണ്ടന്റ് കണ്ടെത്തി!");
+                    await sock.sendMessage(from, { delete: msg.key });
+                    await sock.sendMessage(from, { text: "⚠️ *AI ALERT:* നിയമവിരുദ്ധമായ ദൃശ്യങ്ങൾ അയച്ചതിനാൽ ആ മെസ്സേജ് ഡിലീറ്റ് ചെയ്തു." });
+                }
+            }
+        } catch (err) {
+            console.log("Error:", err.message);
+        }
+    });
+
+    // കണക്ഷൻ സ്റ്റാറ്റസ്
+    sock.ev.on('connection.update', (update) => {
+        const { connection, lastDisconnect } = update;
+        if (connection === 'close') {
+            const shouldReconnect = (lastDisconnect.error instanceof Boom)?.output?.statusCode !== DisconnectReason.loggedOut;
+            if (shouldReconnect) startBot();
+        } else if (connection === 'open') {
+            console.log('\n🚀 🛡️ AI GUARD BOT സജീവമായി!');
+            console.log('ഗ്രൂപ്പുകൾ ഇപ്പോൾ സുരക്ഷിതമാണ്.\n');
         }
     });
 }
 
-// 4. API for Pairing
-app.get('/get-pair', async (req, res) => {
-    let num = req.query.number;
-    if (!num) return res.json({ error: "Number required" });
-
-    const { state, saveCreds } = await useMultiFileAuthState(`./temp/${num}`);
-    const pairingSock = makeWASocket({
-        auth: state,
-        logger: pino({ level: "silent" }),
-        browser: Browsers.ubuntu("Chrome")
-    });
-
-    if (!pairingSock.authState.creds.registered) {
-        try {
-            let code = await pairingSock.requestPairingCode(num);
-            res.json({ code: code });
-        } catch { res.json({ error: "Failed" }); }
-    }
-
-    pairingSock.ev.on('creds.update', saveCreds);
-    pairingSock.ev.on('connection.update', async (up) => {
-        if (up.connection === 'open') {
-            const creds = fs.readFileSync(`./temp/${num}/creds.json`, 'utf-8');
-            const sid = `ASURA_MD_${Buffer.from(creds).toString('base64')}`;
-            await pairingSock.sendMessage(pairingSock.user.id, { text: sid });
-            fs.rmSync(`./temp/${num}`, { recursive: true, force: true });
-        }
-    });
-});
-
-app.listen(PORT, () => console.log(`Asura Server on ${PORT}`));
-if (SESSION_ID) startAsura();
+startBot();
