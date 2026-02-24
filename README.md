@@ -7,10 +7,10 @@
 ## 🛠 Deployment Methods
 
 ### 💜 Deploy to Heroku
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://www.heroku.com/deploy/?template=https://github.com/your-username/your-public-repo)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://www.heroku.com/deploy/?template=https://github.com/arun-cumar/asura-md-bot
 
 ### 🚂 Deploy to Railway
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/deploy?library=https://github.com/your-username/your-public-repo)
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/deploy?library=https://github.com/arun-cumar/asura-md-bot
 
 ## 🔑 How to get Session ID?
 1. [Click here to Pair](your-pairing-site-link)
