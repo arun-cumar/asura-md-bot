@@ -8,6 +8,6 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "axios": "latest"
+    "@whiskeysockets/baileys": "latest"
   }
 }
