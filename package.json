@@ -1,7 +1,7 @@
 {
   "name": "asura-md-bot",
   "version": "v2.0",
-  "description": "WhatsApp Bot",
+  "description": "WhatsApp Multi-Device Bot",
   "main": "index.js",
   "type": "module",
   "scripts": {
