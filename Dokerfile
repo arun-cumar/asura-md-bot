@@ -1,5 +1,5 @@
 # repo
-FROM ghcr.io/arakbox3/AsuraMd:latest
+FROM ghcr.io/arakbox3/asura-md:latest
 
 # run command
 CMD ["node", "index.js"]
