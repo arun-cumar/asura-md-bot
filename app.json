@@ -1,0 +1,18 @@
+{
+  "name": "ASURA-MD",
+  "description": "WhatsApp Multi-Device Bot",
+  "logo": "https://telegra.ph/file/your-logo-link.jpg",
+  "repository": "https://github.com/your-username/your-public-repo",
+  "stack": "container",
+  "env": {
+    "SESSION_ID": {
+      "description": "Put your Session ID here",
+      "required": true
+    },
+    "PREFIX": {
+      "description": "Choose your bot prefix",
+      "value": ".",
+      "required": true
+    }
+  }
+}
