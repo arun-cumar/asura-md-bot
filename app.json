@@ -2,7 +2,7 @@
   "name": "ASURA-MD",
   "description": "WhatsApp Multi-Device Bot",
   "logo": "https://files.catbox.moe/ait49m.jpg",
-  "repository": "https://github.com/your-username/your-public-repo",
+  "repository": "https://github.com/arun-cumar/asura-md-bot",
   "stack": "container",
   "env": {
     "SESSION_ID": {
