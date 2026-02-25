@@ -16,7 +16,7 @@
 
 <div align="center">
 
-  <img src="https://telegra.ph/file/your-logo-link.jpg" width="200" style="border-radius: 50%; box-shadow: 0px 0px 20px rgba(0,0,0,0.5);">
+  <img src="https://files.catbox.moe/ait49m.jpg" width="200" style="border-radius: 50%; box-shadow: 0px 0px 20px rgba(0,0,0,0.5);">
 
   # ⚡ ASURA-MD v2.0
   ---
