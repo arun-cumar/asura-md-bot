@@ -38,7 +38,7 @@
 <br>
 <br>
 
-> [!IMPORTANT]
+> ## IMPORTANT
 > ### 📢 **How to Connect?**
 > 1️⃣. Click the **GET SESSION** button above.
 > 2️⃣. Enter your phone number with country code.
