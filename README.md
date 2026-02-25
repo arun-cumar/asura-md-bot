@@ -15,22 +15,32 @@
 ## 🔑 How to get Session ID?
 
 <div align="center">
+
+  <img src="https://telegra.ph/file/your-logo-link.jpg" width="200" style="border-radius: 50%; box-shadow: 0px 0px 20px rgba(0,0,0,0.5);">
+
+  # ⚡ ASURA-MD v2.0
+  ---
+
   <table border="0">
     <tr>
-      <td bgcolor="#FFC0CB" align="center" style="padding: 20px; border-radius: 15px; border: 2px solid #FF69B4;">
-        <font color="#000" size="4"><b>PAIRING SITE</b></font><br><br>
+      <td align="center" style="background: linear-gradient(135deg, #00c6ff, #0072ff); padding: 40px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+        <br>
+        <font color="#ffffff" size="6" face="trebuchet ms"><b>CONNECTION CENTER</b></font>
+        <br><br>
+        <p style="color: #e0e0e0; font-size: 16px;">Link your WhatsApp using Pair Code technology for 2027 secure encryption.</p>
+        <br>
         <a href="your-pairing-site-link">
-          <img src="https://img.shields.io/badge/GET%20SESSION-FF69B4?style=for-the-badge&logo=whatsapp&logoColor=white" />
+          <img src="https://img.shields.io/badge/GET%20SESSION%20ID-white?style=for-the-badge&logo=codesandbox&logoColor=0072ff" height="45" />
         </a>
+        <br><br>
       </td>
     </tr>
   </table>
-</div>
 
-<br>
+  <br>
 
-2. Scan the QR or enter your number.
-3. Copy the Session ID and paste it in the deployment settings.
+1️⃣. Scan the QR or enter your number.
+2️⃣. Copy the Session ID and paste it in the deployment settings.
 
 
 ## `Clone Repo & Installation dependencies`
