@@ -1,13 +1,1 @@
-{
-  "name": "asura-md-bot",
-  "version": "v2.0",
-  "description": "WhatsApp Multi-Device Bot",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "start": "node index.js"
-  },
-  "dependencies": {
-    "@whiskeysockets/baileys": "latest"
-  }
-}
+{"name": "Asura-MD","version": "v2.0","description":"Asura-MD Whatsapp  Bot by arun•°Cumar","main": "index.js","type": "module","scripts": {"start": "node index.js"},"dependencies": {"@whiskeysockets/baileys": "^7.0.0-rc.9","@adiwajshing/keyed-db": "latest","pino": "latest","axios": "latest","fs-extra": "latest","express": "latest","fluent-ffmpeg": "latest","ffmpeg-static": "latest","jimp": "latest","node-fetch": "latest","g-i-s": "latest","form-data": "latest","google-tts-api": "latest","@google/generative-ai": "latest","wa-sticker-formatter": "latest","qrcode-terminal": "latest","youtube-sr": "latest"}}
