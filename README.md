@@ -52,8 +52,8 @@
 
 ## `Clone Repo & Installation dependencies`
 ```bash
-git clone https://github.com/arun-cumar/asura-md.git
-cd asura-md 
+git clone https://github.com/arun-cumar/asura-md-bot.git
+cd asura-md-bot 
 
 npm start
 ```
@@ -63,8 +63,8 @@ apt update
 apt upgrade
 pkg update && pkg upgrade
 pkg install ffmpeg -y 
-git clone https://github.com/arun-cumar/asura-md.git 
-cd asura-md 
+git clone https://github.com/arun-cumar/asura-md-bot.git 
+cd asura-md-bot 
 npm install
 node index.js
 ```
