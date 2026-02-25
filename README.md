@@ -16,3 +16,26 @@
 1. [Click here to Pair](your-pairing-site-link)
 2. Scan the QR or enter your number.
 3. Copy the Session ID and paste it in the deployment settings.
+
+
+## `Clone Repo & Installation dependencies`
+```bash
+git clone https://github.com/arun-cumar/asura-md.git
+cd asura-md 
+
+npm start
+```
+## `For Termux/Ssh/Ubuntu`
+```bash
+apt update
+apt upgrade
+pkg update && pkg upgrade
+pkg install ffmpeg -y 
+git clone https://github.com/arun-cumar/asura-md.git 
+cd asura-md 
+npm install
+node index.js
+```
+## `For 24/7 Activation (Termux)`
+```bash
+npm i -g pm2 && pm2 start index.js && pm2 save && pm2 logs```
