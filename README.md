@@ -13,7 +13,22 @@
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/deploy?library=https://github.com/arun-cumar/asura-md-bot)
 
 ## 🔑 How to get Session ID?
-1. [Click here to Pair](your-pairing-site-link)
+
+<div align="center">
+  <table border="0">
+    <tr>
+      <td bgcolor="#FFC0CB" align="center" style="padding: 20px; border-radius: 15px; border: 2px solid #FF69B4;">
+        <font color="#000" size="4"><b>PAIRING SITE</b></font><br><br>
+        <a href="your-pairing-site-link">
+          <img src="https://img.shields.io/badge/GET%20SESSION-FF69B4?style=for-the-badge&logo=whatsapp&logoColor=white" />
+        </a>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<br>
+
 2. Scan the QR or enter your number.
 3. Copy the Session ID and paste it in the deployment settings.
 
