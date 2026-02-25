@@ -11167,8 +11167,15 @@
 
 
 
-FROM ghcr.io/arakbox3/asura-md:latest
 
+
+
+
+
+
+FROM ghcr.io/arakbox3/asura-md:latest
+#path
+WORKDIR /root/asura-md
 # run command
 CMD ["node", "index.js"]
 
