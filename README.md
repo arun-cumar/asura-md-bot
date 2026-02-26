@@ -4,14 +4,6 @@
 <img src="https://readme-typing-svg.herokuapp.com?font=Rockstar-ExtraBold&size=35&duration=3000&pause=1000&color=FF0080&center=true&vCenter=true&width=1000&height=100&lines=🔥+WELCOME+TO+ASURA+MD+WhatsApp+BOT+🔥;💎+CREATED+BY+arun+Cumar+💎;🎥+VIDEO+DOWNLOADER;🎵+SONG+DOWNLOADER;🖼️+STICKER+CONVERTER;⚡+FAST+%7C+SMART+%7C+POWERFUL;🚀+THANKS+FOR+VISITING+OUR+GITHUB+🚀" />
 </p>
 
-## 🛠 Deployment Methods
-
-### 💜 Deploy to Heroku
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://www.heroku.com/deploy/?template=https://github.com/arun-cumar/asura-md-bot)
-
-### 🚂 Deploy to Railway
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/deploy?library=https://github.com/arun-cumar/asura-md-bot)
-
 ## 🔑 How to get Session ID?
 
 <div align="center">
@@ -50,4 +42,13 @@
 ---
 </div>
 
+## 🛠 Deployment Methods
 
+### 💜 Deploy to Heroku
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://www.heroku.com/deploy/?template=https://github.com/arun-cumar/asura-md-bot)
+
+### 🚂 Deploy to Railway
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/deploy?library=https://github.com/arun-cumar/asura-md-bot)
+
+### 🚀 Deploy to Render  
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/arun-cumar/asura-md-bot)
