@@ -31,7 +31,7 @@
    
 <br>
 
-<a href="your-pairing-site-link">
+<a href="https://asura-pair-site.onrender.com">
   <img src="https://img.shields.io/badge/🏮_GET_SESSION_ID-FF0000?style=for-the-badge&logo=whatsapp&logoColor=white&labelColor=000000" width="300" height="60" />
 </a>
 
@@ -50,24 +50,4 @@
 ---
 </div>
 
-## `Clone Repo & Installation dependencies`
-```bash
-git clone https://github.com/arun-cumar/asura-md-bot.git
-cd asura-md-bot 
 
-npm start
-```
-## `For Termux/Ssh/Ubuntu`
-```bash
-apt update
-apt upgrade
-pkg update && pkg upgrade
-pkg install ffmpeg -y 
-git clone https://github.com/arun-cumar/asura-md-bot.git 
-cd asura-md-bot 
-npm install
-node index.js
-```
-## `For 24/7 Activation (Termux)`
-```bash
-npm i -g pm2 && pm2 start index.js && pm2 save && pm2 logs```
