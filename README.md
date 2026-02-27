@@ -48,41 +48,46 @@
 ### 💜 Deploy to Heroku
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://www.heroku.com/deploy/?template=https://github.com/arun-cumar/asura-md-bot)
 
+---
 ### 🚂 Deploy to Railway
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/deploy?library=https://github.com/arun-cumar/asura-md-bot)
 
+---
 ### 🚀 Deploy to Render  
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/arun-cumar/asura-md-bot)
 
+---
 ### ▲ Deploy to Vercel  
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/arun-cumar/asura-md-bot)
 
+---
 ### 🧪 Deploy to Replit  
 [![Run on Replit](https://replit.com/badge/github/arun-cumar/asura-md-bot)](https://replit.com/github/arun-cumar/asura-md-bot)
 
+---
 ### ☁️ Deploy to Koyeb  
 
 [![Deploy to Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)](https://app.koyeb.com/deploy?type=git&repository=https://github.com/arun-cumar/asura-md-bot)
 
-
+---
 ### 🆗 Okteto
 [![Develop on Okteto](https://okteto.com/develop-okteto.svg)](https://cloud.okteto.com/deploy?remote=https://github.com/arun-cumar/asura-md-bot)
 
-
+---
 # 💻 Manual Build (VPS / Cloud Shell)
    # *Run these commands in your terminal:*
 > 
 # 📥 Step 1: Clone and Enter the Project
-
+bash 
 git clone https://github.com/arun-cumar/asura-md-bot.git && cd asura-md-bot
 
 # 🏗️ Step 2: Build the Container Box
-
+bash 
 sudo docker build -t asura-md .
 
 # 🚢 Step 3: Launch the Bot
 # ⚠️ Replace 'your_session_id' with your actual session code
-
+ bash
 sudo docker run -d \
   --name asura-bot \
   --restart always \
@@ -91,9 +96,10 @@ sudo docker run -d \
   asura-md
 
 # 📝 Step 4: Monitor Output
-
+bash
 sudo docker logs -f asura-bot
 
+---
 # 💡 Management Dashboard
 | Action | Command |
 |---|---|
@@ -101,3 +107,6 @@ sudo docker logs -f asura-bot
 | ▶️ Start Bot | sudo docker start asura-bot |
 | 🔄 Restart Bot | sudo docker restart asura-bot |
 | 🗑️ Remove Bot | sudo docker rm -f asura-bot |
+
+## Support
+* [🙏 WhatsApp Channel]([https://t.me/raganork_in](https://whatsapp.com/channel/0029VbB59W9GehENxhoI5l24))
