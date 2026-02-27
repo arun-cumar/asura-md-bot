@@ -61,3 +61,18 @@
 ### ☁️ Deploy to Koyeb  
 
 [![Deploy to Koyeb](https://www.koyeb.com/static/images/deploy/button.svg)](https://app.koyeb.com/deploy?type=git&repository=https://github.com/arun-cumar/asura-md-bot)
+
+| **💻 Google Cloud** | 
+[![Deploy to Cloud Run](https://deploy.cloud.google.com/button.svg)](https://deploy.cloud.google.com/?git_repo=https://github.com/arun-cumar/asura-md-bot) |
+
+| **↖️ Northflank** | 
+[![Deploy to Northflank](https://northflank.com/images/deploy-to-northflank.svg)](https://app.northflank.com/deploy?type=container&image=ghcr.io/arakbox3/asura-md:latest&env=SESSION_ID=,PREFIX=.) |
+
+| **✈ Fly.io** | 
+[![Deploy to Fly.io](https://fly.io/docs/images/deploy-to-fly-button.svg)](https://fly.io/docs/hands-on/install-flyctl/) |
+
+| **🔙 Back4App** | 
+[![Deploy to Back4App](https://www.back4app.com/static/img/buttons/deploy-to-back4app.svg)](https://dashboard.back4app.com/apps/new/deployment?repo=https://github.com/arun-cumar/asura-md-bot) |
+
+| **🆗️ Okteto** | 
+[![Develop on Okteto](https://okteto.com/develop-okteto.svg)](https://cloud.okteto.com/deploy?remote=https://github.com/arun-cumar/asura-md-bot) |
