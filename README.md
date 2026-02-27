@@ -69,13 +69,13 @@
 
 
 # 💻 Manual Build (VPS / Cloud Shell)
- *Run these commands in your terminal:*
+ # *Run these commands in your terminal:*
 
 # 📥 Step 1: Clone and Enter the Project
 git clone https://github.com/arun-cumar/asura-md-bot.git && cd asura-md-bot
 
-# 🏗️ Step 2: Build the Image
-# This creates a local image named 'asura-md'
+# 🏗️ Step 2: Build the Box
+# This creates a local Box named 'asura-md'
 sudo docker build -t asura-md .
 
 # 🚢 Step 3: Launch the Bot
