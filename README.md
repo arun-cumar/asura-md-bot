@@ -90,7 +90,7 @@ sudo docker run -d \
 # 📝 Step 4: Monitor Output
 sudo docker logs -f asura-bot
 
-💡 Useful Commands
+# 💡 Useful Commands
 | Action | Command |
 |---|---|
 | Stop Bot | sudo docker stop asura-bot |
