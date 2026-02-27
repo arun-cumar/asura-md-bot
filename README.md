@@ -26,7 +26,7 @@
 <br>
 
 <a href="https://asura-pair-site.onrender.com">
-  <img src="https://img.shields.io/badge/🏮_GET_SESSION_ID-FF0000?style=for-the-badge&logo=whatsapp&logoColor=white&labelColor=000000" width="250" height="80" />
+  <img src="https://img.shields.io/badge/🏮_GET_SESSION_ID-FF0000?style=for-the-badge&logo=whatsapp&logoColor=white&labelColor=000000" width="150" height="80" />
 </a>
 
 <br>
