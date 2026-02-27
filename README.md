@@ -80,8 +80,8 @@
 > 
 # 📥 Step 1: Clone and Enter the Project
 
-          ```git clone https://github.com/arun-cumar/asura-md-bot.git && cd asura-md-bot
-```
+          ```git clone https://github.com/arun-cumar/asura-md-bot.git && cd asura-md-bot```
+          
 # 🏗️ Step 2: Build the Container Box
 
          ```sudo docker build -t asura-md .```
@@ -98,9 +98,8 @@
 
 # 📝 Step 4: Monitor Output
 
-        ```bash
-sudo docker logs -f asura-bot
- ```
+        ```sudo docker logs -f asura-bot```
+
 ---
 # 💡 Management Dashboard
 | Action | Command |
