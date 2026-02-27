@@ -71,20 +71,20 @@
 # *Run these commands in your terminal:*
 
 bash
-# 1. Clone the repository
-git clone https://github.com/arun-cumar/asura-md-bot.git
-cd asura-md-bot
+ 1. Clone the repository
+```git clone https://github.com/arun-cumar/asura-md-bot.git
+cd asura-md-bot```
 
-# 2. Build the Docker image (Don't forget the dot at the end)
-sudo docker build -t asura-md .
+ 2. Build the Docker image (Don't forget the dot at the end)
+```sudo docker build -t asura-md .```
 
-# 3. Run the container
-# Replace 'your_session_id' with your actual session
-sudo docker run -d --name asura-bot \
+ 3. Run the container
+ Replace 'your_session_id' with your actual session
+```sudo docker run -d --name asura-bot \
   --restart always \
   -e SESSION_ID=your_session_id \
-  asura-md
+  asura-md```
 
-# 4. Check Logs 
-sudo docker logs -f asura-bot
+ 4. Check Logs 
+ ```sudo docker logs -f asura-bot```
 
