@@ -79,18 +79,18 @@
 > 
 # 📥 Step 1: Clone and Enter the Project
 
-           bash 
+           
 git clone https://github.com/arun-cumar/asura-md-bot.git && cd asura-md-bot
 
 # 🏗️ Step 2: Build the Container Box
 
-        bash 
+         
 sudo docker build -t asura-md .
 
 # 🚢 Step 3: Launch the Bot
 # ⚠️ Replace 'your_session_id' with your actual session code
 
-     bash
+     
 sudo docker run -d \
   --name asura-bot \
   --restart always \
@@ -100,7 +100,7 @@ sudo docker run -d \
 
 # 📝 Step 4: Monitor Output
 
-        bash
+        
 sudo docker logs -f asura-bot
 
 ---
