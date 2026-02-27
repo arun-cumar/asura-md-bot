@@ -1,15 +1,16 @@
-
 # 🚀 ASURA-MD WhatsApp Bot
 
 <p align="center">
-<img src="https://readme-typing-svg.herokuapp.com?font=Rockstar-ExtraBold&size=15&duration=2000&pause=250&color=FF0080&center=true&vCenter=true&width=250&height=50&lines=🔥+WELCOME+TO+ASURA+MD+WhatsApp+BOT+🔥;💎+CREATED+BY+arun+Cumar+💎;🎥+VIDEO+DOWNLOADER;🎵+SONG+DOWNLOADER;🖼️+STICKER+CONVERTER;⚡+FAST+%7C+SMART+%7C+POWERFUL;🚀+THANKS+FOR+VISITING+OUR+GITHUB+🚀" />
+<img src="https://readme-typing-svg.herokuapp.com?font=Rockstar-ExtraBold&size=25&duration=3000&pause=1000&color=FF0080&center=true&vCenter=true&width=450&height=100&lines=🔥+WELCOME+TO+ASURA+MD+🔥;💎+CREATED+BY+arun+Cumar+💎;⚡+FAST+%7C+SMART+%7C+POWERFUL" />
 </p>
+
+<div align="center">
 
 ## 🔑 How to get Session ID?
 
 <div align="center">
 
-  <img src="https://files.catbox.moe/ait49m.jpg" width="200" style="border-radius: 50%; box-shadow: 0px 0px 20px rgba(0,0,0,0.5);">
+  <img src="https://files.catbox.moe/ait49m.jpg" width="180" style="border-radius: 50%; box-shadow: 0px 0px 20px rgba(0,0,0,0.5);">
 
   # ⚡ ASURA-MD v2.0
   ---
@@ -25,7 +26,7 @@
 <br>
 
 <a href="https://asura-pair-site.onrender.com">
-  <img src="https://img.shields.io/badge/🏮_GET_SESSION_ID-FF0000?style=for-the-badge&logo=whatsapp&logoColor=white&labelColor=000000" width="300" height="60" />
+  <img src="https://img.shields.io/badge/🏮_GET_SESSION_ID-FF0000?style=for-the-badge&logo=whatsapp&logoColor=white&labelColor=000000" width="250" height="80" />
 </a>
 
 <br>
