@@ -74,41 +74,76 @@
 [![Develop on Okteto](https://okteto.com/develop-okteto.svg)](https://cloud.okteto.com/deploy?remote=https://github.com/arun-cumar/asura-md-bot)
 
 ---
- 
-# 💻 Manual Build (VPS / Cloud Shell)
+
+ ### 💻 Manual Build (VPS / Cloud Shell)
    # *Run these commands in your terminal:*
 > 
-# 📥 Step 1: Clone and Enter the Project
 
-          ```git clone https://github.com/arun-cumar/asura-md-bot.git && cd asura-md-bot```
-          
-# 🏗️ Step 2: Build the Container Box
+ ***📥 Step 1: Clone and Enter the Project***
 
-         ```sudo docker build -t asura-md .```
+```bash
+   git clone https://github.com/arun-cumar/asura-md-bot.git && cd asura-md-bot 
+```
 
-# 🚢 Step 3: Launch the Bot
-# ⚠️ Replace 'your_session_id' with your actual session code
+***🏗️ Step 2: Build the Container Box***
 
-     ```sudo docker run -d \
+```bash
+          sudo docker build -t asura-md . 
+```
+
+***🚢 Step 3: Launch the Bot***
+***⚠️ Replace 'your SESSION_ID' with your actual session code***
+
+```bash
+     sudo docker run -d \
   --name asura-bot \
   --restart always \
   -e SESSION_ID=your_session_id \
   -e PREFIX=. \
-  asura-md```
+  asura-md
+```
 
-# 📝 Step 4: Monitor Output
+*** 📝 Step 4: Monitor Output***
 
-        ```sudo docker logs -f asura-bot```
+```bash
+         sudo docker logs -f asura-bot 
+```
 
 ---
-# 💡 Management Dashboard
+***💡 Management Dashboard ***
 | Action | Command |
 |---|---|
 | 🛑 Stop Bot | ``sudo docker stop asura-bot ``|
 | ▶️ Start Bot | ``sudo docker start asura-bot`` |
 | 🔄 Restart Bot | ``sudo docker restart asura-bot`` |
 | 🗑️ Remove Bot |`` sudo docker rm -f asura-bot`` |
+---
+## 📺 Video Tutorial & Support
+> **Note:** Detailed video guide is coming soon! Subscribe to stay updated.
 
-## Support
-* [🙏 WhatsApp Channel](https://whatsapp.com/channel/0029VbB59W9GehENxhoI5l24)
+<p align="left">
+<a href=" coming soon">
+  <img src="https://img.shields.io/badge/YouTube-Channel-red?style=for-the-badge&logo=youtube&logoColor=white" height="40">
+</a>
+<a href="https://whatsapp.com/channel/0029VbB59W9GehENxhoI5l24">
+  <img src="https://img.shields.io/badge/WhatsApp-Updates-green?style=for-the-badge&logo=whatsapp&logoColor=white" height="40">
+</a>
+</p>
 
+## 🌟 Show your support
+
+If you like this project, please give it a [⭐️ Star On GitHub Repo](https://github.com/arun-cumar/asura-md-bot)!
+---
+## 📝 Legal
+
+- This project is not affiliated with, authorized, maintained, sponsored or endorsed by WhatsApp or any of its affiliates or subsidiaries.
+- 
+- This is an independent and unofficial software. Use at your own risk.
+- 
+- Do not spam people with this bot.
+- 
+- Do not use this bot to send bulk messages or for illegal purposes.
+- 
+- The developers assume no liability and are not responsible for any misuse or damage caused by this program.
+---
+Copyright ©️ 2026 arun•°Cumar . All rights Reserved.
