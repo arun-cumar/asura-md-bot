@@ -74,6 +74,7 @@
 [![Develop on Okteto](https://okteto.com/develop-okteto.svg)](https://cloud.okteto.com/deploy?remote=https://github.com/arun-cumar/asura-md-bot)
 
 ---
+bash 
 # 💻 Manual Build (VPS / Cloud Shell)
    # *Run these commands in your terminal:*
 > 
