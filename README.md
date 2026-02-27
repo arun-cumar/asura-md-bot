@@ -67,24 +67,33 @@
 ### 🆗 Okteto
 [![Develop on Okteto](https://okteto.com/develop-okteto.svg)](https://cloud.okteto.com/deploy?remote=https://github.com/arun-cumar/asura-md-bot)
 
+
 # 💻 Manual Build (VPS / Cloud Shell)
-# *Run these commands in your terminal:*
+ *Run these commands in your terminal:*
 
-bash
- 1. Clone the repository
-```git clone https://github.com/arun-cumar/asura-md-bot.git
-cd asura-md-bot```
+# 📥 Step 1: Clone and Enter the Project
+git clone https://github.com/arun-cumar/asura-md-bot.git && cd asura-md-bot
 
- 2. Build the Docker image (Don't forget the dot at the end)
-```sudo docker build -t asura-md .```
+# 🏗️ Step 2: Build the Image
+# This creates a local image named 'asura-md'
+sudo docker build -t asura-md .
 
- 3. Run the container
- Replace 'your_session_id' with your actual session
-```sudo docker run -d --name asura-bot \
+# 🚢 Step 3: Launch the Bot
+ *Replace 'your_session_id' with your actual session code*
+sudo docker run -d \
+  --name asura-bot \
   --restart always \
   -e SESSION_ID=your_session_id \
-  asura-md```
+  -e PREFIX=. \
+  asura-md
 
- 4. Check Logs 
- ```sudo docker logs -f asura-bot```
+# 📝 Step 4: Monitor Output
+sudo docker logs -f asura-bot
 
+💡 Useful Commands
+| Action | Command |
+|---|---|
+| Stop Bot | sudo docker stop asura-bot |
+| Start Bot | sudo docker start asura-bot |
+| Restart Bot | sudo docker restart asura-bot |
+| Remove Bot | sudo docker rm -f asura-bot |
