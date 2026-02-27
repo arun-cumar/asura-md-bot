@@ -1,36 +1,25 @@
-# 🚀 ASURA-MD WhatsApp Bot
+# 👺 ASURA-MD WhatsApp Bot
 
 <p align="center">
-<img src="https://readme-typing-svg.herokuapp.com?font=Rockstar-ExtraBold&size=25&duration=3000&pause=1000&color=FF0080&center=true&vCenter=true&width=450&height=100&lines=🔥+WELCOME+TO+ASURA+MD+🔥;💎+CREATED+BY+arun+Cumar+💎;⚡+FAST+%7C+SMART+%7C+POWERFUL" />
+<img src="https://readme-typing-svg.herokuapp.com?font=Rockstar-ExtraBold&size=25&duration=3000&pause=1000&color=FF0080&center=true&vCenter=true&width=400&height=100&lines=🔥+WELCOME+TO+ASURA+MD+🔥;💎+CREATED+BY+arun+Cumar+💎;⚡+FAST+%7C+SMART+%7C+POWERFUL" alt="Typing SVG" />
 </p>
 
-<div align="center">
+<p align="center">
+  <img src="https://files.catbox.moe/ait49m.jpg" width="180" style="border-radius: 50%;">
+</p>
+
+<h1 align="center">👺 ASURA-MD v2.0</h1>
+
+---
 
 ## 🔑 How to get Session ID?
 
-<div align="center">
-
-  <img src="https://files.catbox.moe/ait49m.jpg" width="180" style="border-radius: 50%; box-shadow: 0px 0px 20px rgba(0,0,0,0.5);">
-
-  # ⚡ ASURA-MD v2.0
-  ---
-
-  <table border="0">
-    <tr>
-      <td align="center" style="background: linear-gradient(135deg, #00c6ff, #0072ff); padding: 40px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
-        <br>
-        <div align="center">
-
-# 🏮 ᴀꜱᴜʀᴀ ᴍᴅ ᴘᴀɪʀɪɴɢ ꜱᴇʀᴠɪᴄᴇ 🏮
-   
-<br>
-
-<a href="https://asura-pair-site.onrender.com">
-  <img src="https://img.shields.io/badge/🏮_GET_SESSION_ID-FF0000?style=for-the-badge&logo=whatsapp&logoColor=white&labelColor=000000" width="150" height="80" />
-</a>
-
-<br>
-<br>
+<p align="center">
+  <b>🏮 ᴀꜱᴜʀᴀ ᴍᴅ ᴘᴀɪʀɪɴɢ ꜱᴇʀᴠɪᴄᴇ 🏮</b><br><br>
+  <a href="https://asura-pair-site.onrender.com">
+    <img src="https://img.shields.io/badge/🏮_GET_SESSION_ID-FF0000?style=for-the-badge&logo=whatsapp&logoColor=white&labelColor=000000" height="50" />
+  </a>
+</p>
 
 > ## IMPORTANT
 > ### 📢 **How to Connect?**
