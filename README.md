@@ -1,7 +1,7 @@
 # 👺 ASURA-MD WhatsApp Bot
 
 <p align="center">
-<img src="https://readme-typing-svg.herokuapp.com?font=Rockstar-ExtraBold&size=25&duration=3000&pause=1000&color=FF0080&center=true&vCenter=true&width=400&height=100&lines=🔥+WELCOME+TO+ASURA+MD+🔥;💎+CREATED+BY+arun+Cumar+💎;⚡+FAST+%7C+SMART+%7C+POWERFUL" alt="Typing SVG" />
+<img src="https://readme-typing-svg.herokuapp.com?font=Rockstar-ExtraBold&size=25&duration=3000&pause=1000&color=FF0080&center=true&vCenter=true&width=400&height=100&lines=👺+WELCOME+TO+ASURA+MD+🔥;💎+CREATED+BY+arun+Cumar+💎;⚡+FAST+%7C+SMART+%7C+POWERFUL" alt="Typing SVG" />
 </p>
 
 <p align="center">
@@ -93,14 +93,14 @@
   asura-md
 ```
 
-*** 📝 Step 4: Monitor Output***
+***📝 Step 4: Monitor Output***
 
 ```bash
          sudo docker logs -f asura-bot 
 ```
 
 ---
-***💡 Management Dashboard ***
+***💡 Management Dashboard***
 | Action | Command |
 |---|---|
 | 🛑 Stop Bot | ``sudo docker stop asura-bot ``|
