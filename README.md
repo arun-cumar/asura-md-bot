@@ -1,7 +1,7 @@
 # 👺 ASURA-MD WhatsApp Bot
 
 <p align="center">
-<img src="https://readme-typing-svg.herokuapp.com?font=Rockstar-ExtraBold&size=25&duration=3000&pause=1000&color=FF0080&center=true&vCenter=true&width=400&height=100&lines=👺+WELCOME+TO+ASURA+MD+🔥;💎+CREATED+BY+arun+Cumar+💎;⚡+FAST+%7C+SMART+%7C+POWERFUL" alt="Typing SVG" />
+<img src="https://readme-typing-svg.herokuapp.com?font=Rockstar-ExtraBold&size=50&duration=6000&pause=2000&color=FF0080&center=true&vCenter=true&width=1000&height=200&lines=👺+WELCOME+TO+ASURA+MD+🔥;💎+CREATED+BY+arun•°Cumar+💎;THANKS+FOR+VISITING+THIS+REPO;FEEL+FREE+TO+EXPLORE+THE+PROJECT;⊹₊˚‧︵‿₊୨ᰔ୧₊‿︵‧˚₊⊹;⚡+FAST+%7C+SMART+%7C+POWERFULL" alt="Typing SVG" />
 </p>
 
 <p align="center">
@@ -99,7 +99,6 @@
          sudo docker logs -f asura-bot 
 ```
 
----
 ***💡 Management Dashboard***
 | Action | Command |
 |---|---|
@@ -122,18 +121,13 @@
 
 ## 🌟 Show your support
 
-If you like this project, please give it a [⭐️ Star On GitHub Repo](https://github.com/arun-cumar/asura-md-bot)!
+If you like this project, please give it a [⭐️ Star On Repo](https://github.com/arun-cumar/asura-md-bot)!
 ---
-## 📝 Legal
 
-- This project is not affiliated with, authorized, maintained, sponsored or endorsed by WhatsApp or any of its affiliates or subsidiaries.
-- 
-- This is an independent and unofficial software. Use at your own risk.
-- 
-- Do not spam people with this bot.
-- 
-- Do not use this bot to send bulk messages or for illegal purposes.
-- 
-- The developers assume no liability and are not responsible for any misuse or damage caused by this program.
----
-Copyright ©️ 2026 arun•°Cumar . All rights Reserved.
+## ⚠️ Notice
+_Educational use only.
+Do not use this bot for spam or any illegal activities._
+
+<img src="https://readme-typing-svg.herokuapp.com?font=Rockstar-ExtraBold&size=50&duration=2000&pause=1000&color=FF0000&center=true&vCenter=true&width=900&height=100&lines=Copyright+©️+2026+arun•°Cumar;All+Rights+Reserved.;⊹₊˚‧︵‿₊୨ᰔ୧₊‿︵‧˚₊⊹;" alt="Typing SVG" />
+</p>
+
